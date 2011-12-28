@@ -4,7 +4,7 @@ module Bunch
       require 'sass'
       @filename = fn
     rescue LoadError
-      $stderr.puts "ERROR: 'gem install sass' to compile .coffee files."
+      $stderr.puts "ERROR: 'gem install sass' to compile .sass and .scss files."
     end
 
     def contents

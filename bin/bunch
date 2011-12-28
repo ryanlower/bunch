@@ -2,5 +2,6 @@
 
 $:.unshift File.expand_path('../../lib', __FILE__)
 require 'bunch'
+require 'bunch/cli'
 
-puts Bunch.concatenate(ARGV.shift)
+Bunch::CLI.process!

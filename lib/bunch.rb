@@ -1,6 +1,9 @@
-require 'yaml'
+require 'fileutils'
 require 'pathname'
+require 'yaml'
+
 require 'mime/types'
+require 'slop'
 
 begin
   require 'v8'

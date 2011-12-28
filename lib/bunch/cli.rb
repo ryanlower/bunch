@@ -57,34 +57,32 @@ module Bunch
         on :i, :individual, 'Create one output file for each file or directory in the input path (default)', :default => true
         on :a, :all, 'Create an all.[extension] file combining all inputs'
         on :h, :help, 'Show this message' do
-          display_help = true
+          puts self
+          exit
         end
       end
 
       if ARGV.count < 1
-        $stderr.puts "ERROR: Must give an input path."
         display_help = true
+        raise "Must give an input path."
       end
 
       if ARGV.count < 2 && opts[:individual] && !opts[:server]
-        $stderr.puts "ERROR: Must give an output path unless --no-individual or --server is provided."
         display_help = true
-      end
-
-      if display_help
-        $stderr.puts "\n#{opts}"
-        exit
+        raise "Must give an output path unless --no-individual or --server is provided."
       end
 
       input  = ARGV.shift
       output = ARGV.shift
 
       CLI.new(input, output, opts)
-    rescue Exception => e
+    rescue => e
       if ENV['BUNCH_DEBUG']
         raise
       else
         $stderr.puts "ERROR: #{e.message}"
+        $stderr.puts "\n#{opts}" if display_help
+        exit 1
       end
     end
   end

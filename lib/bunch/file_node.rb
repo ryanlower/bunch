@@ -8,6 +8,10 @@ module Bunch
       File.read(@filename)
     end
 
+    def name
+      File.basename(@filename).sub(%r(\.[^/]*?$), '')
+    end
+
     def inspect
       @filename.inspect
     end

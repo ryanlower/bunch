@@ -9,6 +9,10 @@ module Bunch
       Sass::Engine.for_file(@filename, {}).render
     end
 
+    def name
+      File.basename(@filename).sub(/\.s(c|a)ss$/, '')
+    end
+
     def inspect
       @filename.inspect
     end

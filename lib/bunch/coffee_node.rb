@@ -1,11 +1,12 @@
 module Bunch
-  class Leaf
+  class CoffeeNode
     def initialize(fn)
+      require 'coffee-script'
       @filename = fn
     end
 
     def contents
-      File.read(@filename)
+      CoffeeScript.compile(File.read(@filename), :bare => false)
     end
 
     def inspect

@@ -3,14 +3,4 @@
 $:.unshift File.expand_path('../../lib', __FILE__)
 require 'bunch'
 
-path = ARGV.shift
-opt  = ARGV.shift
-
-Bunch.extension = case
-  when opt
-    opt.sub(/-+/, '')
-  else
-    'js'
-  end
-
-puts Bunch.concatenate(path)
+puts Bunch.concatenate(ARGV.shift)

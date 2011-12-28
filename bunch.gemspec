@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Bunch::VERSION
   s.authors     = ["Ryan Fitzgerald"]
   s.email       = ["rwfitzge@gmail.com"]
-  s.homepage    = ""
+  s.homepage    = "http://rynftz.gr"
   s.summary     = %q{Simple, directory-structure-based asset bundling.}
   s.description = %q{Simple, directory-structure-based asset bundling.}
 
@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  # specify any dependencies here; for example:
-  # s.add_development_dependency "rspec"
-  # s.add_runtime_dependency "rest-client"
+  s.add_runtime_dependency "mime-types"
+  s.add_runtime_dependency "slop"
 end

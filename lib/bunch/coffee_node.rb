@@ -3,14 +3,20 @@ module Bunch
     def initialize(fn)
       require 'coffee-script'
       @filename = fn
+    rescue LoadError
+      $stderr.puts "ERROR: 'gem install coffee-script' to compile .coffee files."
     end
 
     def contents
-      CoffeeScript.compile(File.read(@filename), :bare => false)
+      @contents ||= CoffeeScript.compile(File.read(@filename), :bare => false)
     end
 
     def name
       File.basename(@filename, '.coffee')
+    end
+
+    def target_extension
+      'js'
     end
 
     def inspect

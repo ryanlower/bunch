@@ -1,13 +1,13 @@
 module Bunch
   class DirectoryNode
-    attr_reader :root, :children
+    attr_reader :root
 
     def initialize(fn)
       @root = Pathname.new(fn)
     end
 
     def filenames
-      @filenames ||= Dir[@root.join("*")].select { |f| f !~ /_\.yml$/ }
+      Dir[@root.join("*")].select { |f| f !~ /_\.yml$/ }
     end
 
     def children
@@ -25,8 +25,19 @@ module Bunch
       end
     end
 
+    def target_extension
+      @target_extension ||= begin
+        exts = children.map(&:target_extension).compact.uniq
+        if exts.count == 1
+          exts.first
+        else
+          raise "Directory contains non-homogeneous nodes: #{exts.inspect}"
+        end
+      end
+    end
+
     def contents
-      children.map(&:contents).join
+      @contents ||= children.map(&:contents).join
     end
 
     def name
@@ -34,7 +45,7 @@ module Bunch
     end
 
     def inspect
-      "#<Node @root=#{@root.inspect} @children=#{@children.inspect}>"
+      "#<Node @root=#{@root.inspect} @children=#{children.inspect}>"
     end
   end
 end

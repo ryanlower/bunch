@@ -1,53 +1,63 @@
 module Bunch
   class CLI
     def initialize(input, output, opts)
-      @input     = Pathname.new(input)
-      @output    = Pathname.new(output)
-      @ext       = opts[:e].sub(/^\./, '')
-      @write_all = opts[:a]
+      @input  = Pathname.new(input)
+      @output = output ? Pathname.new(output) : nil
+      @opts   = opts
     end
 
     def process!
-      FileUtils.mkdir_p(@output.to_s)
-      all = @output.join("all.#{@ext}")
+      tree = Bunch::Tree(@input.to_s)
 
-      Dir[@input.join('*')].each do |fn|
-        out = @output.join(fn.sub("#{@input}/", '').sub(/\.#{@ext}$/, '') + ".#{@ext}")
-        contents = Bunch.generate(fn)
-        write(out, contents)
-        append(all, contents) if @write_all
+      if @output
+        FileUtils.mkdir_p(@output.to_s)
+      end
+
+      if @opts[:all]
+        if @output
+          write(@output.join("all.#{tree.target_extension}"), tree.contents)
+        else
+          puts tree.contents
+        end
+      end
+
+      if @opts[:individual]
+        tree.children.each do |child|
+          write(@output.join("#{child.name}.#{child.target_extension}"), child.contents)
+        end
       end
     end
 
     private
-      def write(fn, contents, mode='w')
-        File.open(fn, mode) { |f| f.write(contents) }
-      end
-
-      def append(fn, contents)
-        write(fn, contents, 'a')
+      def write(fn, contents)
+        File.open(fn, 'w') { |f| f.write(contents) }
       end
   end
 
   class << CLI
     def process!
       opts = Slop.parse! do
-        banner 'Usage: bunch [options] INPUT_PATH OUTPUT_PATH'
+        banner 'Usage: bunch [options] INPUT_PATH [OUTPUT_PATH]'
 
-        on :e, :extension, 'The extension of the output files (required)', :optional => false
-        on :a, :all, 'Also create an all.[extension] file combining all inputs'
+        on :i, :individual, 'Create one output file for each file or directory in the input path (default)', :default => true
+        on :a, :all, 'Create an all.[extension] file combining all inputs'
         on :h, :help, 'Show this message' do
           display_help = true
         end
       end
 
-      if !opts[:e] || ARGV.count < 2
-        print "ERROR: Missing one or more required arguments (note that --extension is required).\n\n"
+      if ARGV.count < 1
+        $stderr.puts "ERROR: Must give an input path."
+        display_help = true
+      end
+
+      if ARGV.count < 2 && opts[:individual]
+        $stderr.puts "ERROR: Must give an output path unless --no-individual is provided."
         display_help = true
       end
 
       if display_help
-        puts opts
+        $stderr.puts "\n#{opts}"
         exit
       end
 
@@ -55,6 +65,12 @@ module Bunch
       output = ARGV.shift
 
       CLI.new(input, output, opts).process!
+    rescue Exception => e
+      if ENV['BUNCH_DEBUG']
+        raise
+      else
+        $stderr.puts "ERROR: #{e.message}"
+      end
     end
   end
 end

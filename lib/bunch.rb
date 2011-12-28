@@ -8,7 +8,7 @@ require 'slop'
 begin
   require 'v8'
 rescue LoadError
-  STDERR.puts "WARNING: 'gem install therubyracer' for much faster CoffeeScript compilation."
+  $stderr.puts "WARNING: 'gem install therubyracer' for much faster CoffeeScript compilation."
 end
 
 require 'bunch/version'
@@ -22,16 +22,6 @@ module Bunch
 end
 
 class << Bunch
-  def generate(path)
-    if File.exist?(path)
-      Tree(path).contents
-    elsif File.exist?(chopped_path = path.sub(%r(\.[^/]*?$), ''))
-      Tree(chopped_path).contents
-    else
-      raise Errno::ENOENT, path
-    end
-  end
-
   def Tree(fn)
     case
     when File.directory?(fn)

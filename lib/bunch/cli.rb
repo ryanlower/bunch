@@ -4,9 +4,23 @@ module Bunch
       @input  = Pathname.new(input)
       @output = output ? Pathname.new(output) : nil
       @opts   = opts
+
+      if @opts[:server]
+        run_server
+      else
+        generate_files
+      end
     end
 
-    def process!
+    def run_server
+      require 'rack'
+      ::Rack::Handler::WEBrick.run(Bunch::Rack.new(@input), :Port => 3001)
+    rescue LoadError
+      $stderr.puts "ERROR: 'gem install rack' to run Bunch in server mode."
+      exit 1
+    end
+
+    def generate_files
       tree = Bunch::Tree(@input.to_s)
 
       if @output
@@ -39,6 +53,7 @@ module Bunch
       opts = Slop.parse! do
         banner 'Usage: bunch [options] INPUT_PATH [OUTPUT_PATH]'
 
+        on :s, :server, 'Instead of creating files, use WEBrick to serve files from INPUT_PATH'
         on :i, :individual, 'Create one output file for each file or directory in the input path (default)', :default => true
         on :a, :all, 'Create an all.[extension] file combining all inputs'
         on :h, :help, 'Show this message' do
@@ -51,8 +66,8 @@ module Bunch
         display_help = true
       end
 
-      if ARGV.count < 2 && opts[:individual]
-        $stderr.puts "ERROR: Must give an output path unless --no-individual is provided."
+      if ARGV.count < 2 && opts[:individual] && !opts[:server]
+        $stderr.puts "ERROR: Must give an output path unless --no-individual or --server is provided."
         display_help = true
       end
 
@@ -64,7 +79,7 @@ module Bunch
       input  = ARGV.shift
       output = ARGV.shift
 
-      CLI.new(input, output, opts).process!
+      CLI.new(input, output, opts)
     rescue Exception => e
       if ENV['BUNCH_DEBUG']
         raise

@@ -45,7 +45,7 @@ module Bunch
     end
 
     def inspect
-      "#<Node @root=#{@root.inspect} @children=#{children.inspect}>"
+      "#<DirectoryNode @root=#{@root.inspect} @children=#{children.inspect}>"
     end
   end
 end

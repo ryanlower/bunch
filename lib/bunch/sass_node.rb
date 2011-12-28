@@ -5,6 +5,7 @@ module Bunch
       @filename = fn
     rescue LoadError
       $stderr.puts "ERROR: 'gem install sass' to compile .sass and .scss files."
+      exit 1
     end
 
     def contents

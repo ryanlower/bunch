@@ -5,6 +5,7 @@ module Bunch
       @filename = fn
     rescue LoadError
       $stderr.puts "ERROR: 'gem install coffee-script' to compile .coffee files."
+      exit 1
     end
 
     def contents

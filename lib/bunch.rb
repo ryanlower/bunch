@@ -1,5 +1,6 @@
 require 'yaml'
 require 'pathname'
+require 'mime/types'
 
 begin
   require 'v8'
@@ -18,8 +19,14 @@ module Bunch
 end
 
 class << Bunch
-  def concatenate(path)
-    Tree(path).contents
+  def generate(path)
+    if File.exist?(path)
+      Tree(path).contents
+    elsif File.exist?(chopped_path = path.sub(%r(\.[^/]*?$), ''))
+      Tree(chopped_path).contents
+    else
+      raise Errno::ENOENT, path
+    end
   end
 
   def Tree(fn)

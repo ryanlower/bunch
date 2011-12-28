@@ -6,7 +6,7 @@ module Bunch
       @root = Pathname.new(fn)
       @filenames = Dir[@root.join("*")].select { |f| f !~ /_\.yml$/ }
       reorder_files
-      @children = filenames.map &Bunch.method(:Tree)
+      @children = @filenames.map &Bunch.method(:Tree)
     end
 
     def contents

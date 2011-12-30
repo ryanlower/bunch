@@ -6,10 +6,10 @@ Gem::Specification.new do |s|
   s.name        = "bunch"
   s.version     = Bunch::VERSION
   s.authors     = ["Ryan Fitzgerald"]
-  s.email       = ["rwfitzge@gmail.com"]
-  s.homepage    = "http://rynftz.gr"
-  s.summary     = %q{Simple, directory-structure-based asset bundling.}
-  s.description = %q{Simple, directory-structure-based asset bundling.}
+  s.email       = ["rfitz@academia.edu"]
+  s.homepage    = ""
+  s.summary     = %q{Directory-structure-based asset bundling.}
+  s.description = %q{Directory-structure-based asset bundling.}
 
   s.rubyforge_project = "bunch"
 

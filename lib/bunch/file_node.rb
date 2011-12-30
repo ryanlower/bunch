@@ -5,7 +5,7 @@ module Bunch
     def initialize(fn)
       @filename = fn
 
-      if fn =~ %r(\.([^/]*?)$)
+      if fn =~ %r(\.([^.]*)$)
         @name = File.basename($`)
         @target_extension = $1
       else

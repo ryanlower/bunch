@@ -17,7 +17,7 @@ module Bunch
       def generate(path)
         if File.exist?(path)
           Bunch::Tree(path).contents
-        elsif File.exist?(chopped_path = path.sub(%r(\.[^/]*?$), ''))
+        elsif File.exist?(chopped_path = path.sub(%r(\.[^.]*$), ''))
           Bunch::Tree(chopped_path).contents
         elsif File.basename(path).start_with?('all.')
           Bunch::Tree(File.dirname(path)).contents

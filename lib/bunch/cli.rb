@@ -29,7 +29,7 @@ module Bunch
 
       if @opts[:all]
         if @output
-          write(@output.join("all.#{tree.target_extension}"), tree.contents)
+          write("all.#{tree.target_extension}", tree.contents)
         else
           puts tree.contents
         end
@@ -37,14 +37,14 @@ module Bunch
 
       if @opts[:individual]
         tree.children.each do |child|
-          write(@output.join("#{child.name}.#{child.target_extension}"), child.contents)
+          write("#{child.name}.#{child.target_extension}", child.contents)
         end
       end
     end
 
     private
       def write(fn, contents)
-        File.open(fn, 'w') { |f| f.write(contents) }
+        File.open(@output.join(fn), 'w') { |f| f.write(contents) }
       end
   end
 

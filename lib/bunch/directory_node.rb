@@ -12,7 +12,7 @@ module Bunch
 
     def children
       @children ||= begin
-        children = filenames.map &Bunch.method(:Tree)
+        children = filenames.map &Bunch.method(:tree_for)
         ordering_file = @root.join('_.yml')
 
         if File.exist?(ordering_file)
@@ -36,8 +36,8 @@ module Bunch
       end
     end
 
-    def contents
-      @contents ||= children.map(&:contents).join
+    def content
+      @content ||= children.map(&:content).join
     end
 
     def name

@@ -22,20 +22,38 @@ module Bunch
 end
 
 class << Bunch
-  def Tree(fn)
+  def content_for(path)
+    tree_for(normalized_path(path)).content
+  end
+
+  def tree_for(path)
     case
-    when !File.exist?(fn)
-      raise Errno::ENOENT, fn
-    when File.directory?(fn)
-      Bunch::DirectoryNode.new(fn)
-    when fn =~ /\.coffee$/
-      Bunch::CoffeeNode.new(fn)
-    when fn =~ /\.s(a|c)ss$/
-      Bunch::SassNode.new(fn)
+    when File.directory?(path)
+      Bunch::DirectoryNode.new(path)
+    when path =~ /\.coffee$/
+      Bunch::CoffeeNode.new(path)
+    when path =~ /\.s(a|c)ss$/
+      Bunch::SassNode.new(path)
     else
-      Bunch::FileNode.new(fn)
+      Bunch::FileNode.new(path)
     end
   end
+
+  private
+    def normalized_path(path)
+      case
+      when File.exist?(path)
+        path
+      when File.exist?(chopped_path = path.sub(%r(\.[^.]*$), ''))
+        chopped_path
+      when File.basename(path).start_with?('all.') && File.exist?(dir_path = File.dirname(path))
+        dir_path
+      when (path_w_different_extension = Dir["#{chopped_path}.*"].first)
+        path_w_different_extension
+      else
+        raise Errno::ENOENT, path.to_s
+      end
+    end
 end
 
 #class Module

@@ -25,7 +25,7 @@ module Bunch
     end
 
     def generate_files
-      tree = Bunch::Tree(@input.to_s)
+      tree = Bunch.tree_for(@input.to_s)
 
       if @output
         FileUtils.mkdir_p(@output.to_s)
@@ -33,22 +33,22 @@ module Bunch
 
       if @opts[:all]
         if @output
-          write("all.#{tree.target_extension}", tree.contents)
+          write("all.#{tree.target_extension}", tree.content)
         else
-          puts tree.contents
+          puts tree.content
         end
       end
 
       if @opts[:individual]
         tree.children.each do |child|
-          write("#{child.name}.#{child.target_extension}", child.contents)
+          write("#{child.name}.#{child.target_extension}", child.content)
         end
       end
     end
 
     private
-      def write(fn, contents)
-        File.open(@output.join(fn), 'w') { |f| f.write(contents) }
+      def write(fn, content)
+        File.open(@output.join(fn), 'w') { |f| f.write(content) }
       end
   end
 

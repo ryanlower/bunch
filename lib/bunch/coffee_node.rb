@@ -10,8 +10,8 @@ module Bunch
       raise "'gem install coffee-script' to compile .coffee files."
     end
 
-    def contents
-      @contents ||= CoffeeScript.compile(File.read(@filename), :bare => false)
+    def content
+      @content ||= CoffeeScript.compile(File.read(@filename), :bare => false)
     end
 
     def name

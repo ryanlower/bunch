@@ -10,8 +10,8 @@ module Bunch
       raise "'gem install sass' to compile .sass and .scss files."
     end
 
-    def contents
-      @contents ||= Sass::Engine.for_file(@filename, {}).render
+    def content
+      @content ||= Sass::Engine.for_file(@filename, {}).render
     end
 
     def name

@@ -13,7 +13,7 @@ module Bunch
       end
     end
 
-    def contents
+    def content
       File.read(@filename)
     end
 

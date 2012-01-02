@@ -15,7 +15,7 @@ module Bunch
       path = @root.join(env['PATH_INFO'].sub(/^\//, '')).to_s
       type = MIME::Types.type_for(path).first || 'text/plain'
 
-      [200, headers(type), [generate(path)]]
+      [200, headers(type), [content_for(path)]]
     rescue => e
       [500, headers('text/plain'), [error_log(e)]]
     end
@@ -25,23 +25,13 @@ module Bunch
         @headers.merge('Content-Type' => mime_type.to_s)
       end
 
-      def generate(path)
-        case
-        when File.exist?(path)
-          contents(path)
-        when File.exist?(chopped_path = path.sub(%r(\.[^.]*$), ''))
-          contents(chopped_path)
-        when File.basename(path).start_with?('all.')
-          contents(File.dirname(path))
-        when (path_w_different_extension = Dir["#{chopped_path}.*"].first)
-          contents(path_w_different_extension)
-        else
-          raise Errno::ENOENT, path.to_s
-        end
+    private
+      def content_for(path)
+        Bunch.content_for(path)
       end
 
-      def contents(path)
-        Bunch::Tree(path.to_s).contents
+      def headers(mime_type)
+        @headers.merge('Content-Type' => mime_type.to_s)
       end
 
       def error_log(e)

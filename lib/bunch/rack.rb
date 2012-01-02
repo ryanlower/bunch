@@ -15,15 +15,22 @@ module Bunch
 
     private
       def generate(path)
-        if File.exist?(path)
-          Bunch::Tree(path).contents
-        elsif File.exist?(chopped_path = path.sub(%r(\.[^.]*$), ''))
-          Bunch::Tree(chopped_path).contents
-        elsif File.basename(path).start_with?('all.')
-          Bunch::Tree(File.dirname(path)).contents
+        case
+        when File.exist?(path)
+          contents(path)
+        when File.exist?(chopped_path = path.sub(%r(\.[^.]*$), ''))
+          contents(chopped_path)
+        when File.basename(path).start_with?('all.')
+          contents(File.dirname(path))
+        when (path_w_different_extension = Dir["#{chopped_path}.*"].first)
+          contents(path_w_different_extension)
         else
-          raise Errno::ENOENT, path
+          raise Errno::ENOENT, path.to_s
         end
+      end
+
+      def contents(path)
+        Bunch::Tree(path.to_s).contents
       end
 
       def error_log(e)

@@ -5,6 +5,10 @@ module Bunch
       @output = output ? Pathname.new(output) : nil
       @opts   = opts
 
+      if @opts[:profile]
+        require 'profile'
+      end
+
       if @opts[:server]
         run_server
       else
@@ -56,6 +60,7 @@ module Bunch
         on :s, :server, 'Instead of creating files, use WEBrick to serve files from INPUT_PATH'
         on :i, :individual, 'Create one output file for each file or directory in the input path (default)', :default => true
         on :a, :all, 'Create an all.[extension] file combining all inputs'
+        on :p, :profile
         on :h, :help, 'Show this message' do
           puts self
           exit

@@ -1,7 +1,10 @@
 module Bunch
   class CoffeeNode
     def initialize(fn)
-      require 'coffee-script'
+      unless defined?(@@coffee_required)
+        require 'coffee-script'
+        @@coffee_required = true
+      end
       @filename = fn
     rescue LoadError
       raise "'gem install coffee-script' to compile .coffee files."

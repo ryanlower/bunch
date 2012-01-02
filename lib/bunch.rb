@@ -24,6 +24,8 @@ end
 class << Bunch
   def Tree(fn)
     case
+    when !File.exist?(fn)
+      raise Errno::ENOENT, fn
     when File.directory?(fn)
       Bunch::DirectoryNode.new(fn)
     when fn =~ /\.coffee$/
@@ -35,3 +37,14 @@ class << Bunch
     end
   end
 end
+
+#class Module
+#  def benchmark(meth)
+#    alias_method "#{meth}_old", meth
+#    define_method meth do |*args, &blk|
+#      t = Time.now
+#      send "#{meth}_old", *args, &blk
+#      STDERR.puts "Called #{meth} in #{Time.now - t}."
+#    end
+#  end
+#end

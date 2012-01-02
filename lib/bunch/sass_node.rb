@@ -1,7 +1,10 @@
 module Bunch
   class SassNode
     def initialize(fn)
-      require 'sass'
+      unless defined?(@@sass_required)
+        require 'sass'
+        @@sass_required = true
+      end
       @filename = fn
     rescue LoadError
       raise "'gem install sass' to compile .sass and .scss files."

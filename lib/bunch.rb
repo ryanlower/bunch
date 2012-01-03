@@ -12,11 +12,12 @@ rescue LoadError
 end
 
 require 'bunch/version'
+require 'bunch/rack'
+require 'bunch/caching'
 require 'bunch/directory_node'
 require 'bunch/file_node'
 require 'bunch/coffee_node'
 require 'bunch/sass_node'
-require 'bunch/rack'
 
 module Bunch
 end

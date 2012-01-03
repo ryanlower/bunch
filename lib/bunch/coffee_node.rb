@@ -1,5 +1,7 @@
 module Bunch
   class CoffeeNode
+    include Caching
+
     def initialize(fn)
       unless defined?(@@coffee_required)
         require 'coffee-script'
@@ -11,7 +13,7 @@ module Bunch
     end
 
     def content
-      @content ||= CoffeeScript.compile(File.read(@filename), :bare => false)
+      @content ||= fetch(@filename) { CoffeeScript.compile(File.read(@filename), :bare => false) }
     end
 
     def name

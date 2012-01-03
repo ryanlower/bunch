@@ -1,5 +1,7 @@
 module Bunch
   class SassNode
+    include Caching
+
     def initialize(fn)
       unless defined?(@@sass_required)
         require 'sass'
@@ -11,7 +13,7 @@ module Bunch
     end
 
     def content
-      @content ||= Sass::Engine.for_file(@filename, {}).render
+      @content ||= fetch(@filename) { Sass::Engine.for_file(@filename, {}).render }
     end
 
     def name

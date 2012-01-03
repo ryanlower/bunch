@@ -13,6 +13,7 @@ end
 
 require 'bunch/version'
 require 'bunch/rack'
+require 'bunch/middleware'
 require 'bunch/caching'
 require 'bunch/directory_node'
 require 'bunch/file_node'

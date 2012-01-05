@@ -1,5 +1,5 @@
 module Bunch
-  class DirectoryNode
+  class DirectoryNode < AbstractNode
     attr_reader :root
 
     def initialize(fn)
@@ -30,8 +30,10 @@ module Bunch
         exts = children.map(&:target_extension).compact.uniq
         if exts.count == 1
           exts.first
+        elsif exts.count > 1
+          raise "Directory #{name} contains non-homogeneous nodes: #{exts.inspect}"
         else
-          raise "Directory contains non-homogeneous nodes: #{exts.inspect}"
+          nil
         end
       end
     end
@@ -42,6 +44,11 @@ module Bunch
 
     def name
       File.basename(@root)
+    end
+
+    def write_to_file(dir)
+      return if filenames.count == 0
+      super
     end
 
     def inspect

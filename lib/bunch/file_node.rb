@@ -1,15 +1,16 @@
 module Bunch
-  class FileNode
-    attr_reader :name, :target_extension
+  class FileNode < AbstractNode
+    attr_accessor :name, :target_extension
 
     def initialize(fn)
       @filename = fn
 
-      if fn =~ %r(\.([^.]*)$)
+      if fn =~ /\.[^.]*$/
         @name = File.basename($`)
-        @target_extension = $1
+        @target_extension = $&
       else
         @name = File.basename(@filename)
+        @target_extension = nil
       end
     end
 

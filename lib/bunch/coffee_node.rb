@@ -1,7 +1,5 @@
 module Bunch
-  class CoffeeNode
-    include Caching
-
+  class CoffeeNode < FileNode
     def initialize(fn)
       unless defined?(@@coffee_required)
         require 'coffee-script'
@@ -21,11 +19,7 @@ module Bunch
     end
 
     def target_extension
-      'js'
-    end
-
-    def inspect
-      @filename.inspect
+      '.js'
     end
   end
 end

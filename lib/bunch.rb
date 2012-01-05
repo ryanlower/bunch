@@ -14,7 +14,9 @@ end
 require 'bunch/version'
 require 'bunch/rack'
 require 'bunch/middleware'
-require 'bunch/caching'
+require 'bunch/cache'
+
+require 'bunch/abstract_node'
 require 'bunch/directory_node'
 require 'bunch/file_node'
 require 'bunch/coffee_node'
@@ -41,7 +43,7 @@ class << Bunch
     end
   end
 
-  private
+  protected
     def normalized_path(path)
       case
       when File.exist?(path)
@@ -57,14 +59,3 @@ class << Bunch
       end
     end
 end
-
-#class Module
-#  def benchmark(meth)
-#    alias_method "#{meth}_old", meth
-#    define_method meth do |*args, &blk|
-#      t = Time.now
-#      send "#{meth}_old", *args, &blk
-#      STDERR.puts "Called #{meth} in #{Time.now - t}."
-#    end
-#  end
-#end

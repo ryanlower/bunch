@@ -1,7 +1,5 @@
 module Bunch
-  class SassNode
-    include Caching
-
+  class SassNode < FileNode
     def initialize(fn)
       unless defined?(@@sass_required)
         require 'sass'
@@ -21,11 +19,7 @@ module Bunch
     end
 
     def target_extension
-      'css'
-    end
-
-    def inspect
-      @filename.inspect
+      '.css'
     end
   end
 end

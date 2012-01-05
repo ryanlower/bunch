@@ -5,10 +5,6 @@ module Bunch
       @output = output ? Pathname.new(output) : nil
       @opts   = opts
 
-      if @opts[:profile]
-        require 'profile'
-      end
-
       if @opts[:server]
         run_server
       else
@@ -33,7 +29,7 @@ module Bunch
 
       if @opts[:all]
         if @output
-          write("all.#{tree.target_extension}", tree.content)
+          tree.write_to_file(@output.join('all'))
         else
           puts tree.content
         end
@@ -41,15 +37,10 @@ module Bunch
 
       if @opts[:individual]
         tree.children.each do |child|
-          write("#{child.name}.#{child.target_extension}", child.content)
+          child.write_to_dir(@output)
         end
       end
     end
-
-    private
-      def write(fn, content)
-        File.open(@output.join(fn), 'w') { |f| f.write(content) }
-      end
   end
 
   class << CLI
@@ -60,7 +51,6 @@ module Bunch
         on :s, :server, 'Instead of creating files, use WEBrick to serve files from INPUT_PATH'
         on :i, :individual, 'Create one output file for each file or directory in the input path (default)', :default => true
         on :a, :all, 'Create an all.[extension] file combining all inputs'
-        on :p, :profile
         on :h, :help, 'Show this message' do
           puts self
           exit

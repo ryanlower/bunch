@@ -21,11 +21,6 @@ module Bunch
     end
 
     private
-      def headers(mime_type)
-        @headers.merge('Content-Type' => mime_type.to_s)
-      end
-
-    private
       def content_for(path)
         Bunch.content_for(path)
       end

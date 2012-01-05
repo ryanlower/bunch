@@ -33,7 +33,7 @@ module Bunch
       end
     end
 
-    private
+    protected
       def root_regexp
          Regexp.new("^#{Regexp.quote(@root_url).gsub('/', '/+')}(.*)")
       end

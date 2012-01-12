@@ -1,22 +1,12 @@
 module Bunch
   class SassNode < FileNode
     def initialize(fn)
-      unless defined?(@@sass_required)
-        require 'sass'
-        @@sass_required = true
-      end
-
-      unless defined?(@@sass_style)
-        @@sass_style = ENV['SASS_STYLE'] || 'nested'
-      end
-
+      SassNode.require_sass
       @filename = fn
-    rescue LoadError
-      raise "'gem install sass' to compile .sass and .scss files."
     end
 
     def content
-      @content ||= fetch(@filename) { Sass::Engine.for_file(@filename, :style => @@sass_style.to_sym).render }
+      @content ||= fetch(@filename) { Sass::Engine.for_file(@filename, :style => SassNode.style).render }
     end
 
     def name
@@ -25,6 +15,23 @@ module Bunch
 
     def target_extension
       '.css'
+    end
+  end
+
+  class << SassNode
+    attr_writer :style
+
+    def require_sass
+      unless @required
+        require 'sass'
+        @required = true
+      end
+    rescue LoadError
+      raise "'gem install sass' to compile .sass and .scss files."
+    end
+
+    def style
+      @style ||= (env = ENV['SASS_STYLE']) ? env.to_sym : :nested
     end
   end
 end

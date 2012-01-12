@@ -7,7 +7,7 @@ require 'shoulda-context'
 
 # collapse whitespace and remove semicolons
 def squeeze(js)
-  js.gsub(/;/, '').gsub(/\n/, ' ').strip.squeeze
+  js.tr("\n;", ' ').strip.squeeze
 end
 
 # perform a request for the given path and set @status, @headers, and @body.

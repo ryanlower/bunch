@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MiddlewareTest < Test::Unit::TestCase
-  context 'using the Middleware class' do
+  context 'the Middleware class' do
     setup do
       @app = Bunch::Middleware.new(nil,
         :root_url => '/javascripts',

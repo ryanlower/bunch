@@ -1,17 +1,12 @@
 module Bunch
   class CoffeeNode < FileNode
     def initialize(fn)
-      unless defined?(@@coffee_required)
-        require 'coffee-script'
-        @@coffee_required = true
-      end
+      CoffeeNode.require_coffee
       @filename = fn
-    rescue LoadError
-      raise "'gem install coffee-script' to compile .coffee files."
     end
 
     def content
-      @content ||= fetch(@filename) { CoffeeScript.compile(File.read(@filename), :bare => false) }
+      @content ||= fetch(@filename) { CoffeeScript.compile(File.read(@filename), :bare => CoffeeNode.bare) }
     end
 
     def name
@@ -20,6 +15,23 @@ module Bunch
 
     def target_extension
       '.js'
+    end
+  end
+
+  class << CoffeeNode
+    attr_writer :bare
+
+    def require_coffee
+      unless @required
+        require 'coffee-script'
+        @required = true
+      end
+    rescue LoadError
+      raise "'gem install coffee-script' to compile .coffee files."
+    end
+
+    def bare
+      defined?(@bare) ? @bare : (@bare = false)
     end
   end
 end

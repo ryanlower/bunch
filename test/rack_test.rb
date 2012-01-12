@@ -4,6 +4,7 @@ class RackTest < Test::Unit::TestCase
   context 'given a tree of js and coffee files' do
     setup do
       @app = Bunch::Rack.new('example/js')
+      Bunch::CoffeeNode.bare = true
     end
 
     context 'when / is requested' do

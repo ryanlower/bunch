@@ -8,7 +8,6 @@ module Bunch
 
       unless defined?(@@sass_style)
         @@sass_style = ENV['SASS_STYLE'] || 'nested'
-        puts @@sass_style.inspect
       end
 
       @filename = fn

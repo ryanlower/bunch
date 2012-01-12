@@ -2,7 +2,7 @@
 
 module Bunch
   class Middleware
-    attr_accessor :app
+    attr_accessor :app, :endpoint
 
     def initialize(app, options={})
       unless options[:root_url] && options[:path]
@@ -16,7 +16,7 @@ module Bunch
 
     def call(env)
       path = env['PATH_INFO'].to_s
-      script_name = env['SCRIPT_NAME']
+      script_name = env['SCRIPT_NAME'].to_s
 
       if path =~ root_regexp &&
           (rest = $1) &&

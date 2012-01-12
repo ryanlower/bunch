@@ -23,4 +23,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard'
   s.add_development_dependency 'rdiscount'
   s.add_development_dependency 'shoulda-context'
+  s.add_development_dependency 'mocha'
 end

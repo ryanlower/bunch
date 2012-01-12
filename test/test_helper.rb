@@ -2,6 +2,7 @@ $:.unshift File.expand_path('../../lib', __FILE__)
 
 require 'bunch'
 require 'test/unit'
+require 'mocha'
 require 'shoulda-context'
 
 # collapse whitespace and remove semicolons

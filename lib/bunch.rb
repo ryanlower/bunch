@@ -1,9 +1,9 @@
 require 'fileutils'
+require 'optparse'
 require 'pathname'
 require 'yaml'
 
 require 'mime/types'
-require 'slop'
 
 begin
   require 'v8'

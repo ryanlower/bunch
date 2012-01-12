@@ -45,40 +45,54 @@ module Bunch
 
   class << CLI
     def process!
-      opts = Slop.parse! do
-        banner 'Usage: bunch [options] INPUT_PATH [OUTPUT_PATH]'
+      CLI.new(*parse_opts)
+    rescue => e
+      if ENV['BUNCH_DEBUG']
+        raise
+      else
+        $stderr.puts "ERROR: #{e.message}"
+        exit 1
+      end
+    end
 
-        on :s, :server, 'Instead of creating files, use WEBrick to serve files from INPUT_PATH'
-        on :i, :individual, 'Create one output file for each file or directory in the input path (default)', :default => true
-        on :a, :all, 'Create an all.[extension] file combining all inputs'
-        on :h, :help, 'Show this message' do
-          puts self
+    def parse_opts
+      options = {:individual => true}
+
+      opts = OptionParser.new do |opts|
+        opts.banner = 'Usage: bunch [options] INPUT_PATH [OUTPUT_PATH]'
+
+        opts.on '-s', '--server', 'Instead of creating files, use WEBrick to serve files from INPUT_PATH.' do
+          options[:server] = true
+        end
+
+        opts.on '-i', '--[no-]individual', 'Create one output file for each file or directory in the input path (default).' do |i|
+          options[:individual] = i
+        end
+
+        opts.on '-a', '--all', 'Create an all.[extension] file combining all inputs.' do
+          options[:all] = true
+        end
+
+        opts.on_tail '-h', '--help', 'Show this message.' do
+          puts opts
           exit
         end
       end
 
+      opts.parse!
+
       if ARGV.count < 1
-        display_help = true
-        raise "Must give an input path."
+        raise "Must give an input path.\n\n#{opts}"
       end
 
-      if ARGV.count < 2 && opts[:individual] && !opts[:server]
-        display_help = true
+      if ARGV.count < 2 && options[:individual] && !options[:server]
         raise "Must give an output path unless --no-individual or --server is provided."
       end
 
       input  = ARGV.shift
       output = ARGV.shift
 
-      CLI.new(input, output, opts)
-    rescue => e
-      if ENV['BUNCH_DEBUG']
-        raise
-      else
-        $stderr.puts "ERROR: #{e.message}"
-        $stderr.puts "\n#{opts}" if display_help
-        exit 1
-      end
+      [input, output, options]
     end
   end
 end

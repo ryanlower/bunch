@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_runtime_dependency 'mime-types'
-  s.add_runtime_dependency 'slop'
 
   s.add_development_dependency 'yard'
   s.add_development_dependency 'rdiscount'

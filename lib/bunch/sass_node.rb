@@ -8,8 +8,7 @@ module Bunch
     def content
       @content ||= fetch(@filename) { Sass::Engine.for_file(@filename, :style => SassNode.style).render }
     rescue => e
-      e.message = "processing #{@filename}: #{e.message}"
-      raise e
+      raise CompileError.new(e, @filename)
     end
 
     def name

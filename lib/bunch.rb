@@ -23,6 +23,16 @@ require 'bunch/coffee_node'
 require 'bunch/sass_node'
 
 module Bunch
+  class CompileError < StandardError
+    def initialize(exception, filename)
+      @exception = exception
+      @filename = filename
+    end
+
+    def message
+      "#{@filename}: #{@exception.message}"
+    end
+  end
 end
 
 class << Bunch

@@ -7,6 +7,9 @@ module Bunch
 
     def content
       @content ||= fetch(@filename) { CoffeeScript.compile(File.read(@filename), :bare => CoffeeNode.bare) }
+    rescue => e
+      e.message = "processing #{@filename}: #{e.message}"
+      raise e
     end
 
     def name

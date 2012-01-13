@@ -7,6 +7,9 @@ module Bunch
 
     def content
       @content ||= fetch(@filename) { Sass::Engine.for_file(@filename, :style => SassNode.style).render }
+    rescue => e
+      e.message = "processing #{@filename}: #{e.message}"
+      raise e
     end
 
     def name

@@ -12,6 +12,10 @@ module Bunch
       @app = app
       @root_url = options.delete(:root_url)
       @endpoint = Bunch::Rack.new(options.delete(:path), options)
+
+      if options[:gzip]
+        @endpoint = ::Rack::Deflater.new(@endpoint)
+      end
     end
 
     def call(env)

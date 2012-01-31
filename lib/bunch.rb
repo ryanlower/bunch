@@ -21,6 +21,7 @@ require 'bunch/directory_node'
 require 'bunch/file_node'
 require 'bunch/coffee_node'
 require 'bunch/sass_node'
+require 'bunch/null_node'
 
 module Bunch
   class CompileError < StandardError
@@ -36,12 +37,24 @@ module Bunch
 end
 
 class << Bunch
+  IGNORED_PATTERNS = []
+
+  def load_ignores(path='.')
+    fn = File.join(path, '.bunchignore')
+    if File.exist?(fn)
+      IGNORED_PATTERNS.concat File.readlines(fn).map { |f| Regexp.new(f.chomp) }
+      IGNORED_PATTERNS.uniq!
+    end
+  end
+
   def content_for(path)
     tree_for(normalized_path(path)).content
   end
 
   def tree_for(path)
     case
+    when IGNORED_PATTERNS.any? { |p| File.basename(path) =~ p }
+      Bunch::NullNode.new(path)
     when File.directory?(path)
       Bunch::DirectoryNode.new(path)
     when path =~ /\.coffee$/
@@ -69,3 +82,5 @@ class << Bunch
       end
     end
 end
+
+Bunch.load_ignores

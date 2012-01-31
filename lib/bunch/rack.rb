@@ -9,6 +9,8 @@ module Bunch
         @headers['Pragma'] = 'no-cache'
         @headers['Expires'] = 'Thu, 01 Dec 1994 16:00:00 GMT'
       end
+
+      Bunch.load_ignores(@root)
     end
 
     def call(env)

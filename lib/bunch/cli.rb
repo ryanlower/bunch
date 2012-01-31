@@ -21,6 +21,7 @@ module Bunch
     end
 
     def generate_files
+      Bunch.load_ignores(@input)
       tree = Bunch.tree_for(@input.to_s)
 
       if @output

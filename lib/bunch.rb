@@ -61,6 +61,8 @@ class << Bunch
       Bunch::CoffeeNode.new(path)
     when path =~ /\.s(a|c)ss$/
       Bunch::SassNode.new(path)
+    when path =~ /\.ejs$/
+      Bunch::EJSNode.new(path)
     else
       Bunch::FileNode.new(path)
     end

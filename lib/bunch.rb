@@ -22,6 +22,7 @@ require 'bunch/file_node'
 require 'bunch/coffee_node'
 require 'bunch/sass_node'
 require 'bunch/null_node'
+require 'bunch/ejs_node'
 
 module Bunch
   class CompileError < StandardError

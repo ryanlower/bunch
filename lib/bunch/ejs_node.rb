@@ -27,7 +27,7 @@ module Bunch
     end
 
     def target_extension
-      '.jst'
+      '.js'
     end
   end
 

@@ -20,6 +20,8 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'mime-types'
 
+  s.add_development_dependency 'coffee-script'
+  s.add_development_dependency 'sass'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'rdiscount'
   s.add_development_dependency 'shoulda-context'

@@ -36,5 +36,5 @@ module Bunch
     end
   end
 
-  Cache.initialize
+  Cache.send :initialize
 end

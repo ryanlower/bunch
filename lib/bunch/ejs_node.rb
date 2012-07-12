@@ -32,8 +32,6 @@ module Bunch
   end
 
   class << EJSNode
-    attr_writer :bare
-
     def require_ejs
       unless @required
         require 'ejs'

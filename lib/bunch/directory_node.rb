@@ -51,6 +51,15 @@ module Bunch
       super
     end
 
+    def write_to_dir(dir)
+      super
+      directory_name = File.join(dir, name)
+      FileUtils.mkdir(directory_name)
+      children.each do |child|
+        child.write_to_dir(directory_name)
+      end
+    end
+
     def inspect
       "#<DirectoryNode @root=#{@root.inspect} @children=#{children.inspect}>"
     end

@@ -12,7 +12,10 @@ module Bunch
 
     def children
       @children ||= begin
-        children = filenames.map &Bunch.method(:tree_for)
+        children = filenames.map do |filename|
+          Bunch.tree_for(filename, @options)
+        end
+
         ordering_file = @root.join('_.yml')
 
         if File.exist?(ordering_file)
@@ -49,6 +52,18 @@ module Bunch
     def write_to_file(dir)
       return if filenames.count == 0
       super
+    end
+
+    def write_to_dir(dir)
+      super
+
+      if @options[:recurse]
+        directory_name = File.join(dir, name)
+        FileUtils.mkdir(directory_name)
+        children.each do |child|
+          child.write_to_dir(directory_name)
+        end
+      end
     end
 
     def inspect

@@ -49,24 +49,24 @@ class << Bunch
   end
 
   def content_for(path)
-    tree_for(normalized_path(path)).content
+    tree_for(normalized_path(path), {}).content
   end
 
-  def tree_for(path)
-    case
-    when IGNORED_PATTERNS.any? { |p| File.basename(path) =~ p }
-      Bunch::NullNode.new(path)
-    when File.directory?(path)
-      Bunch::DirectoryNode.new(path)
-    when path =~ /\.coffee$/
-      Bunch::CoffeeNode.new(path)
-    when path =~ /\.s(a|c)ss$/
-      Bunch::SassNode.new(path)
-    when path =~ /\.ejs$/
-      Bunch::EJSNode.new(path)
-    else
-      Bunch::FileNode.new(path)
-    end
+  def tree_for(path, options)
+    node = case
+      when IGNORED_PATTERNS.any? { |p| File.basename(path) =~ p }
+        Bunch::NullNode.new(path)
+      when File.directory?(path)
+        Bunch::DirectoryNode.new(path)
+      when path =~ /\.coffee$/
+        Bunch::CoffeeNode.new(path)
+      when path =~ /\.s(a|c)ss$/
+        Bunch::SassNode.new(path)
+      else
+        Bunch::FileNode.new(path)
+      end
+    node.options = options
+    node
   end
 
   protected

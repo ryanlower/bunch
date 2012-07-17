@@ -1,5 +1,7 @@
 module Bunch
   class AbstractNode
+    attr_accessor :options
+
     def content
       raise NotImplementedError
     end

@@ -22,7 +22,7 @@ module Bunch
 
     def generate_files
       Bunch.load_ignores(@input)
-      tree = Bunch.tree_for(@input.to_s)
+      tree = Bunch.tree_for(@input.to_s, @opts)
 
       if @output
         FileUtils.mkdir_p(@output.to_s)
@@ -72,6 +72,10 @@ module Bunch
 
         opts.on '-a', '--all', 'Create an all.[extension] file combining all inputs.' do
           options[:all] = true
+        end
+
+        opts.on '-r', '--recurse', 'Recursively generate one output file for every input file and directory.' do
+          options[:recurse] = true
         end
 
         opts.on_tail '-h', '--help', 'Show this message.' do

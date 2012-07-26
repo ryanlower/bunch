@@ -3,7 +3,7 @@ module Bunch
   end
 
   class << Cache
-    def initialize
+    def init
       @cache = Hash.new { |h, k| h[k] = {} }
     end
 
@@ -36,5 +36,5 @@ module Bunch
     end
   end
 
-  Cache.initialize
+  Cache.init
 end

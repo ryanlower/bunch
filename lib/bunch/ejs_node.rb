@@ -8,10 +8,10 @@ module Bunch
     def content
       @content ||= fetch(@filename) {
         <<-JAVASCRIPT
-(function() {
-  this.JST || (this.JST = {});
-  this.JST['#{template_name}'] = #{EJS.compile(File.read(@filename))};
-}).call(this);
+          (function() {
+            this.JST || (this.JST = {});
+            this.JST['#{template_name}'] = #{EJS.compile(File.read(@filename))};
+          })();
         JAVASCRIPT
       }
     rescue => e

@@ -22,6 +22,7 @@ require 'bunch/file_node'
 require 'bunch/coffee_node'
 require 'bunch/sass_node'
 require 'bunch/null_node'
+require 'bunch/ejs_node'
 
 module Bunch
   class CompileError < StandardError
@@ -47,8 +48,8 @@ class << Bunch
     end
   end
 
-  def content_for(path)
-    tree_for(normalized_path(path), {}).content
+  def content_for(path, options = {})
+    tree_for(normalized_path(path), options).content
   end
 
   def tree_for(path, options)
@@ -61,6 +62,8 @@ class << Bunch
         Bunch::CoffeeNode.new(path)
       when path =~ /\.s(a|c)ss$/
         Bunch::SassNode.new(path)
+      when path =~ /\.ejs$/
+        Bunch::EJSNode.new(path)
       else
         Bunch::FileNode.new(path)
       end

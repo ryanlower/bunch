@@ -24,7 +24,7 @@ module Bunch
 
     private
       def content_for(path)
-        Bunch.content_for(path)
+        Bunch.content_for(path, :root => @root)
       end
 
       def headers(mime_type)

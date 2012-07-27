@@ -13,7 +13,7 @@ class RackTest < Test::Unit::TestCase
       end
 
       should 'combine everything' do
-        assert_equal "1 2 3 4 5 6 7 8 9 10", squeeze(@body)
+        assert squeeze(@body).start_with? "1 2 3 4 5 6 7 8 9 10 (f"
       end
 
       should 'have text/plain content type' do
@@ -27,7 +27,7 @@ class RackTest < Test::Unit::TestCase
       end
 
       should 'combine everything in the correct order' do
-        assert_equal "1 2 3 4 5 6 7 8 9 10", squeeze(@body)
+        assert squeeze(@body).start_with? "1 2 3 4 5 6 7 8 9 10 (f"
       end
 
       should 'have application/javascript content type' do
@@ -65,6 +65,16 @@ class RackTest < Test::Unit::TestCase
         should 'only render the inner folder' do
           assert_equal "6 7", squeeze(@body)
         end
+      end
+    end
+
+    context 'when an EJS template is requested' do
+      setup do
+        perform_request('/test5/test5a.js')
+      end
+
+      should 'have the correct template name' do
+        assert_match @body, %r(this\.JST\[.test5/test5a.\])
       end
     end
   end

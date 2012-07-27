@@ -48,8 +48,8 @@ class << Bunch
     end
   end
 
-  def content_for(path)
-    tree_for(normalized_path(path), {}).content
+  def content_for(path, options = {})
+    tree_for(normalized_path(path), options).content
   end
 
   def tree_for(path, options)
@@ -63,7 +63,7 @@ class << Bunch
       when path =~ /\.s(a|c)ss$/
         Bunch::SassNode.new(path)
       when path =~ /\.ejs$/
-	Bunch::EJSNode.new(path)
+        Bunch::EJSNode.new(path)
       else
         Bunch::FileNode.new(path)
       end

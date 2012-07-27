@@ -22,7 +22,7 @@ module Bunch
 
     def generate_files
       Bunch.load_ignores(@input)
-      tree = Bunch.tree_for(@input.to_s, @opts)
+      tree = Bunch.tree_for(@input.to_s, @opts.merge(:root => @input.to_s))
 
       if @output
         FileUtils.mkdir_p(@output.to_s)

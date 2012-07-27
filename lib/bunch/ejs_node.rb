@@ -23,7 +23,13 @@ module Bunch
     end
 
     def template_name
-      @filename.gsub('app/scripts/','').gsub('.jst.ejs','').gsub('/templates', '')
+      name = @filename.sub(/\.jst\.ejs$/, '')
+
+      if @options[:root]
+        name.sub(/^#{Regexp.escape(@options[:root].to_s)}\//, '')
+      else
+        name
+      end
     end
 
     def target_extension

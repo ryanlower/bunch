@@ -74,7 +74,7 @@ class RackTest < Test::Unit::TestCase
       end
 
       should 'have the correct template name' do
-        assert_match @body, %r(this\.JST\[.test5/test5a\])
+        assert_match @body, %r(this\.JST\[.test5/test5a.\])
       end
     end
   end

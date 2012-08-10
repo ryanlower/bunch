@@ -28,4 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'coffee-script'
   s.add_development_dependency 'sass'
   s.add_development_dependency 'ejs'
+  s.add_development_dependency 'eco'
 end

@@ -77,6 +77,16 @@ class RackTest < Test::Unit::TestCase
         assert_match @body, %r(this\.JST\[.test5/test5a.\])
       end
     end
+
+    context 'when an ECO template is requested' do
+      setup do
+        perform_request('/test6/test6a.js')
+      end
+
+      should 'have the correct template name' do
+        assert_match @body, %r(this\.JST\[.test6/test6a.\])
+      end
+    end
   end
 
   context 'given a tree of scss files' do
